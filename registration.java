@@ -5,6 +5,7 @@ import java.awt.event.*;
 public class registration implements ActionListener {
     JFrame frame;
 
+    // Create Labels
     JLabel nameLabel = new JLabel("Name: ");
     JLabel courseLabel = new JLabel("Course: ");
     JLabel yearLabel = new JLabel("Year Level: ");
@@ -14,20 +15,24 @@ public class registration implements ActionListener {
     JLabel contactNumLabel = new JLabel("Contact Number: ");
     JLabel title = new JLabel("Registration Form", JLabel.CENTER);
 
+    // Create Buttons
     JButton registerButton = new JButton("Register");
     JButton clearButton = new JButton("Clear");
     JButton exitButton = new JButton("Exit");
 
+    // Create text fields and put it in an array for easy traversal
     JTextField nameTF = new JTextField(15);
     JTextField emailTF = new JTextField(15);
     JTextField contactNumberTF = new JTextField(15);
     JTextField[] textFields = { nameTF, emailTF, contactNumberTF };
 
+    // Create combo boxes and put it in an array for easy traversal
     JComboBox<String> courseComboBox = new JComboBox<>(new String[] { "BSCSSE", "BSCSDS", "BSCEAI" });
     JComboBox<Integer> yearComboBox = new JComboBox<>(new Integer[] { 1, 2, 3, 4 });
     @SuppressWarnings("rawtypes")
     JComboBox[] comboBoxs = { courseComboBox, yearComboBox };
 
+    // create radio buttons and group it
     JRadioButton maleButton = new JRadioButton("Male");
     JRadioButton femaleButton = new JRadioButton("Female");
     ButtonGroup genderGroup = new ButtonGroup();
@@ -36,6 +41,7 @@ public class registration implements ActionListener {
         genderGroup.add(maleButton);
         genderGroup.add(femaleButton);
 
+        // initialized frame
         frame = new JFrame("Registration Form");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 450);
@@ -45,6 +51,7 @@ public class registration implements ActionListener {
         grid.insets = new Insets(5, 5, 5, 5);
         grid.fill = GridBagConstraints.HORIZONTAL;
 
+        // application layout
         grid.gridx = 0;
         grid.gridy = 0;
         grid.gridwidth = 2;
@@ -115,9 +122,12 @@ public class registration implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == registerButton) {
-            if (isFieldEmpty(textFields) || !isComboBoxSelected(comboBoxs) || isGenderSelected(genderGroup)) {
+            // check information is complete
+            if (isFieldEmpty(textFields) || isGenderSelected(genderGroup)) {
+                // display an error message if infomation is incomplete
                 JOptionPane.showMessageDialog(frame, "Please fill out all required fields!");
             } else {
+                // if complete, retrieve all information and diplay a preview
                 String gender = " ";
                 String name = nameTF.getText();
                 String course = (String) courseComboBox.getSelectedItem();
@@ -145,6 +155,7 @@ public class registration implements ActionListener {
         }
     }
 
+    // function to check if text fields are empty
     public boolean isFieldEmpty(JTextField[] textFields) {
         for (int i = 0; i < textFields.length; i++) {
             if (textFields[i].getText().trim().isEmpty()) {
@@ -154,15 +165,7 @@ public class registration implements ActionListener {
         return false;
     }
 
-    public boolean isComboBoxSelected(JComboBox<?>[] comboBox) {
-        for (int i = 0; i < comboBox.length; i++) {
-            if (comboBox[i].getSelectedItem() == null) {
-                return false;
-            }
-        }
-        return true;
-    }
-
+    // check if the user choose a gender
     public boolean isGenderSelected(ButtonGroup genderGroup) {
         return genderGroup.getSelection() == null;
     }
