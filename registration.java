@@ -2,6 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * The registration class creates a GUI for a user registration form.
+ * It includes text fields, combo boxes, radio buttons, and buttons to capture and display user input.
+ * The form captures the user's name, course, year level, gender, email, and contact number.
+ */
+
 public class registration implements ActionListener {
     JFrame frame;
 
