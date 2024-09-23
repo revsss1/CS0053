@@ -125,6 +125,11 @@ public class registration implements ActionListener {
         frame.setVisible(true);
     }
 
+        /**
+     * Method to handle button clicks for register, clear, and exit buttons.
+     * @param e ActionEvent representing the button click event.
+     */
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == registerButton) {
