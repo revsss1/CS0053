@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-
 import javax.swing.*;
 
 public class Login implements ActionListener {
@@ -27,6 +26,8 @@ public class Login implements ActionListener {
         frame = new JFrame("Login");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(350, 300);
+        frame.setResizable(false);
+        ;
         frame.setLayout(new GridBagLayout());
         GridBagConstraints grid = new GridBagConstraints();
         grid.insets = new Insets(5, 5, 5, 5);
@@ -89,17 +90,16 @@ public class Login implements ActionListener {
             String username = textFields[0].getText().trim();
             String password = textFields[1].getText().trim();
 
-            // Check if any field is empty
             if (username.isEmpty() || password.isEmpty()) {
                 JOptionPane.showMessageDialog(frame, "Enter username/password");
             } else {
-                // Validate username and password
                 if (!isValidUserName(username)) {
                     JOptionPane.showMessageDialog(frame, "Invalid Username");
                 } else if (!isValidPassword(password)) {
                     JOptionPane.showMessageDialog(frame, "Invalid Password");
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Login Successfully");
+                    new HomePage(username);
+                    frame.dispose();
                 }
             }
         } else if (e.getSource() == clearButton) {
@@ -111,12 +111,14 @@ public class Login implements ActionListener {
     }
 
     public static boolean isValidUserName(String username) {
+        boolean hasUpperCase = false;
         boolean hasTransitioned = false;
 
         for (int i = 0; i < username.length(); i++) {
             char currentChar = username.charAt(i);
 
             if (Character.isUpperCase(currentChar)) {
+                hasUpperCase = true;
                 if (hasTransitioned) {
                     return false;
                 }
@@ -125,7 +127,7 @@ public class Login implements ActionListener {
             }
         }
 
-        return true;
+        return hasUpperCase;
     }
 
     public static boolean isValidPassword(String password) {
@@ -155,5 +157,47 @@ public class Login implements ActionListener {
 
     public static void main(String[] args) {
         new Login();
+    }
+}
+
+class HomePage implements ActionListener {
+    JFrame homeFrame = new JFrame("Home Page");
+
+    HomePage(String Username) {
+
+        homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        homeFrame.setSize(350, 250);
+        homeFrame.setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout(10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JLabel welcome = new JLabel("Welcome " + Username + "!", JLabel.CENTER);
+        welcome.setFont(new Font("Arial", Font.BOLD, 18));
+        welcome.setForeground(Color.BLACK);
+        panel.add(welcome, BorderLayout.CENTER);
+
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        logoutButton.setFocusPainted(false);
+        logoutButton.addActionListener(this);
+        panel.add(logoutButton, BorderLayout.SOUTH);
+
+        homeFrame.add(panel);
+
+        homeFrame.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        if (e.getSource() instanceof JButton) {
+            JButton source = (JButton) e.getSource();
+            if (source.getText().equals("Logout")) {
+                new Login();
+                homeFrame.dispose();
+            }
+        }
     }
 }
