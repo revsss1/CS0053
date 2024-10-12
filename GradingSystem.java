@@ -47,11 +47,11 @@ class ScrollBar extends javax.swing.plaf.basic.BasicScrollBarUI {
     }
 
     private JButton createInvisibleButton() {
-        JButton button = new JButton();
-        button.setPreferredSize(new Dimension(0, 0));
-        button.setMinimumSize(new Dimension(0, 0));
-        button.setMaximumSize(new Dimension(0, 0));
-        return button;
+        JButton Button = new JButton();
+        Button.setPreferredSize(new Dimension(0, 0));
+        Button.setMinimumSize(new Dimension(0, 0));
+        Button.setMaximumSize(new Dimension(0, 0));
+        return Button;
     }
 
     public static void applyMinimalScrollBar(JScrollPane scrollPane) {
@@ -129,9 +129,9 @@ public class GradingSystem extends JFrame implements ActionListener {
     private JTextField[] longQuiz = new TextField[3];
     private JTextField[] classPart = new TextField[4];
     private JTextField[] labAct = new TextField[4];
-    private TextField mtrmExam, finalExam;
-    private TextField LQavg, TEavg, CPavg, LAavg;
-    private JButton[] funcBtn = new JButton[3];
+    private TextField mtrmExam, finalExam, TEavg;
+    private JLabel LQavg, CPavg, LAavg;
+    private Button[] funcBtn = new Button[3];
 
     public GradingSystem() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -218,7 +218,7 @@ public class GradingSystem extends JFrame implements ActionListener {
                             bgPanel.add(lqLabel);
 
                             longQuiz[k] = new TextField();
-                            longQuiz[k].setBounds(190, y, 255, 30);
+                            longQuiz[k].setBounds(265, y, 180, 30);
                             longQuiz[k].setHorizontalAlignment(JTextField.CENTER);
                             bgPanel.add(longQuiz[k]);
                         }
@@ -228,7 +228,7 @@ public class GradingSystem extends JFrame implements ActionListener {
                         LQavgLabel.setFont(defaultFont);
                         bgPanel.add(LQavgLabel);
 
-                        LQavg = new TextField();
+                        LQavg = new JLabel();
                         LQavg.setBounds(230, y, 215, 30);
                         LQavg.setHorizontalAlignment(JTextField.CENTER);
                         bgPanel.add(LQavg);
@@ -248,7 +248,7 @@ public class GradingSystem extends JFrame implements ActionListener {
                             bgPanel.add(cpLabel);
 
                             classPart[k] = new TextField();
-                            classPart[k].setBounds(190, y, 255, 30);
+                            classPart[k].setBounds(265, y, 180, 30);
                             classPart[k].setHorizontalAlignment(JTextField.CENTER);
                             bgPanel.add(classPart[k]);
                         }
@@ -258,7 +258,7 @@ public class GradingSystem extends JFrame implements ActionListener {
                         cpAvgLabel.setFont(defaultFont);
                         bgPanel.add(cpAvgLabel);
 
-                        CPavg = new TextField();
+                        CPavg = new JLabel();
                         CPavg.setBounds(280, y, 165, 30);
                         bgPanel.add(CPavg);
 
@@ -278,7 +278,7 @@ public class GradingSystem extends JFrame implements ActionListener {
                             bgPanel.add(laLabel);
 
                             labAct[k] = new TextField();
-                            labAct[k].setBounds(240, y, 205, 30);
+                            labAct[k].setBounds(265, y, 180, 30);
                             labAct[k].setHorizontalAlignment(JTextField.CENTER);
                             bgPanel.add(labAct[k]);
                         }
@@ -288,7 +288,7 @@ public class GradingSystem extends JFrame implements ActionListener {
                         laAvgLabel.setFont(defaultFont);
                         bgPanel.add(laAvgLabel);
 
-                        LAavg = new TextField();
+                        LAavg = new JLabel();
                         LAavg.setBounds(250, y, 195, 30);
                         LAavg.setHorizontalAlignment(JTextField.CENTER);
                         bgPanel.add(LAavg);
@@ -296,7 +296,7 @@ public class GradingSystem extends JFrame implements ActionListener {
                         y += 20;
                     } else {
                         TEavg = new TextField();
-                        TEavg.setBounds(250, y, 195, 30);
+                        TEavg.setBounds(265, y, 180, 30);
                         TEavg.setHorizontalAlignment(JTextField.CENTER);
                         bgPanel.add(TEavg);
 
@@ -308,14 +308,14 @@ public class GradingSystem extends JFrame implements ActionListener {
                 // Midterms Section
             } else if (percentHeaders[i].equals("Midterms (15%):")) {
                 mtrmExam = new TextField();
-                mtrmExam.setBounds(180, y, 265, 30);
+                mtrmExam.setBounds(265, y, 180, 30);
                 mtrmExam.setHorizontalAlignment(JTextField.CENTER);
                 bgPanel.add(mtrmExam);
 
                 // Finals Section
             } else {
                 finalExam = new TextField();
-                finalExam.setBounds(150, y, 295, 30);
+                finalExam.setBounds(265, y, 180, 30);
                 finalExam.setHorizontalAlignment(JTextField.CENTER);
                 bgPanel.add(finalExam);
             }
@@ -331,7 +331,7 @@ public class GradingSystem extends JFrame implements ActionListener {
         y += 40;
         int xPosition = 27;
         for (int i = 0; i < buttonheaders.length; i++) {
-            funcBtn[i] = new JButton(buttonheaders[i]);
+            funcBtn[i] = new Button(buttonheaders[i]);
             funcBtn[i].setBounds(xPosition, y + 20, 100, 30);
             funcBtn[i].setFont(defaultFont);
             funcBtn[i].setBackground(buttonColors[i]);
@@ -409,7 +409,7 @@ public class GradingSystem extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         try {
-            if (e.getSource() == funcBtn[0]) { // Calculate final grade
+            if (e.getSource() == funcBtn[0]) {
                 float[] finalGradeComponent = {
                         computeClassStanding(),
                         Float.parseFloat(mtrmExam.getText()),
@@ -441,10 +441,16 @@ public class GradingSystem extends JFrame implements ActionListener {
                     finalGrade = 0.5;
                 }
 
-                // Display final grade message
+                LQavg.setText(Float.toString(getAverageLongQuiz()));
+                CPavg.setText(Float.toString(getAverageClassPart()));
+                LAavg.setText(Float.toString(getAverageLabAct()));
+
                 showMessage("Your final grade is: " + finalGrade, "Final Grade", JOptionPane.INFORMATION_MESSAGE);
 
             } else if (e.getSource() == funcBtn[1]) {
+                LQavg.setText("");
+                CPavg.setText("");
+                LAavg.setText("");
                 JTextField[] allFields = Stream.of(longQuiz, classPart, labAct)
                         .flatMap(Arrays::stream)
                         .toArray(JTextField[]::new);
