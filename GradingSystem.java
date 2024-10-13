@@ -186,7 +186,7 @@ public class GradingSystem extends JFrame implements ActionListener {
 
         for (int i = 0; i < percentHeaders.length; i++) {
             JLabel percentLabel = new JLabel(percentHeaders[i]);
-            percentLabel.setBounds(50, y += 40, 250, 30);
+            percentLabel.setBounds(50, y += 35, 250, 30);
             percentLabel.setFont(h4Font);
             percentLabel.setForeground(new Color(0x7C9D96));
             bgPanel.add(percentLabel);
@@ -229,14 +229,14 @@ public class GradingSystem extends JFrame implements ActionListener {
                         bgPanel.add(LQavgLabel);
 
                         LQavg = new JLabel();
-                        LQavg.setBounds(230, y, 215, 30);
+                        LQavg.setBounds(265, y, 180, 30);
                         LQavg.setHorizontalAlignment(JTextField.CENTER);
+                        LQavg.setForeground(Color.RED);
                         bgPanel.add(LQavg);
-
-                        y += 20;
 
                     }
 
+                    // Class Participation Section
                     else if (CSheaders[j].equals("Class Participation (15%):")) {
                         String[] CPlabels = { "Seatwork:", "Assignment:", "Short Quiz:", "Recitation:" };
                         for (int k = 0; k < CPlabels.length; k++) {
@@ -244,7 +244,6 @@ public class GradingSystem extends JFrame implements ActionListener {
 
                             cpLabel.setBounds(90, y += 35, 80, 30);
                             cpLabel.setFont(defaultFont);
-                            cpLabel.setHorizontalAlignment(SwingConstants.RIGHT);
                             bgPanel.add(cpLabel);
 
                             classPart[k] = new TextField();
@@ -254,15 +253,15 @@ public class GradingSystem extends JFrame implements ActionListener {
                         }
 
                         JLabel cpAvgLabel = new JLabel("Class Participation Average:");
-                        cpAvgLabel.setBounds(90, y += 35, 250, 30);
+                        cpAvgLabel.setBounds(90, y += 35, 180, 30);
                         cpAvgLabel.setFont(defaultFont);
                         bgPanel.add(cpAvgLabel);
 
                         CPavg = new JLabel();
-                        CPavg.setBounds(280, y, 165, 30);
+                        CPavg.setBounds(265, y, 180, 30);
+                        CPavg.setHorizontalAlignment(JTextField.CENTER);
+                        CPavg.setForeground(Color.RED);
                         bgPanel.add(CPavg);
-
-                        y += 20;
                     }
 
                     // Lab Activities section
@@ -274,7 +273,6 @@ public class GradingSystem extends JFrame implements ActionListener {
 
                             laLabel.setBounds(90, y += 35, 130, 30);
                             laLabel.setFont(defaultFont);
-                            laLabel.setHorizontalAlignment(SwingConstants.RIGHT);
                             bgPanel.add(laLabel);
 
                             labAct[k] = new TextField();
@@ -289,18 +287,17 @@ public class GradingSystem extends JFrame implements ActionListener {
                         bgPanel.add(laAvgLabel);
 
                         LAavg = new JLabel();
-                        LAavg.setBounds(250, y, 195, 30);
+                        LAavg.setBounds(265, y, 180, 30);
                         LAavg.setHorizontalAlignment(JTextField.CENTER);
+                        LAavg.setForeground(Color.RED);
                         bgPanel.add(LAavg);
 
-                        y += 20;
                     } else {
                         TEavg = new TextField();
                         TEavg.setBounds(265, y, 180, 30);
                         TEavg.setHorizontalAlignment(JTextField.CENTER);
                         bgPanel.add(TEavg);
 
-                        y += 40;
                     }
 
                 }
@@ -365,14 +362,14 @@ public class GradingSystem extends JFrame implements ActionListener {
         label.setFont(defaultFont);
         panel.add(label);
 
-        JButton btn;
+        Button btn;
 
         if (messageType == JOptionPane.INFORMATION_MESSAGE) {
-            btn = new JButton("EXIT");
+            btn = new Button("EXIT");
             btn.setBackground(new Color(229, 217, 242));
             btn.setFont(defaultFont);
         } else {
-            btn = new JButton("OK");
+            btn = new Button("OK");
             btn.setBackground(new Color(244, 193, 193));
             btn.setFont(defaultFont);
         }
