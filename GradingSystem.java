@@ -24,7 +24,7 @@ class ScrollBar extends javax.swing.plaf.basic.BasicScrollBarUI {
 
     @Override
     protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
-        // Leave track transparent
+        
     }
 
     @Override
@@ -57,10 +57,8 @@ class ScrollBar extends javax.swing.plaf.basic.BasicScrollBarUI {
     public static void applyMinimalScrollBar(JScrollPane scrollPane) {
         scrollPane.getVerticalScrollBar().setUI(new ScrollBar());
         scrollPane.getHorizontalScrollBar().setUI(new ScrollBar());
-        scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(8, Integer.MAX_VALUE)); // Make vertical
-                                                                                                 // scrollbar narrow
-        scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(Integer.MAX_VALUE, 8)); // Make horizontal
-                                                                                                   // scrollbar narrow
+        scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(8, Integer.MAX_VALUE)); 
+        scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(Integer.MAX_VALUE, 8));
         scrollPane.getVerticalScrollBar().setOpaque(false);
         scrollPane.getHorizontalScrollBar().setOpaque(false);
     }
@@ -191,7 +189,6 @@ public class GradingSystem extends JFrame implements ActionListener {
             percentLabel.setForeground(new Color(0x7C9D96));
             bgPanel.add(percentLabel);
 
-            // Class Standing Section
             if (percentHeaders[i].equals("Class Standing (60%):")) {
                 String[] CSheaders = {
                         "Long Quizzes (30%):",
@@ -207,7 +204,6 @@ public class GradingSystem extends JFrame implements ActionListener {
                     CSlabels.setForeground(new Color(0x51829B));
                     bgPanel.add(CSlabels);
 
-                    // Long Quizzes section
                     if (CSheaders[j].equals("Long Quizzes (30%):")) {
                         String[] LQlabels = { "Long Quiz 1:", "Long Quiz 2:", "Long Quiz 3:" };
                         for (int k = 0; k < LQlabels.length; k++) {
@@ -236,7 +232,6 @@ public class GradingSystem extends JFrame implements ActionListener {
 
                     }
 
-                    // Class Participation Section
                     else if (CSheaders[j].equals("Class Participation (15%):")) {
                         String[] CPlabels = { "Seatwork:", "Assignment:", "Short Quiz:", "Recitation:" };
                         for (int k = 0; k < CPlabels.length; k++) {
@@ -264,7 +259,6 @@ public class GradingSystem extends JFrame implements ActionListener {
                         bgPanel.add(CPavg);
                     }
 
-                    // Lab Activities section
                     else if (CSheaders[j].equals("Lab Activities (50%)")) {
                         String[] LAlabels = { "Lab Exercises (10%):", "MP (20%):", "Practical (20%)",
                                 "Projects (50%):" };
@@ -302,14 +296,12 @@ public class GradingSystem extends JFrame implements ActionListener {
 
                 }
 
-                // Midterms Section
             } else if (percentHeaders[i].equals("Midterms (15%):")) {
                 mtrmExam = new TextField();
                 mtrmExam.setBounds(265, y, 180, 30);
                 mtrmExam.setHorizontalAlignment(JTextField.CENTER);
                 bgPanel.add(mtrmExam);
 
-                // Finals Section
             } else {
                 finalExam = new TextField();
                 finalExam.setBounds(265, y, 180, 30);
@@ -407,6 +399,10 @@ public class GradingSystem extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         try {
             if (e.getSource() == funcBtn[0]) {
+                if (!validateInputs()) {
+                    return; 
+                }
+    
                 float[] finalGradeComponent = {
                         computeClassStanding(),
                         Float.parseFloat(mtrmExam.getText()),
@@ -415,11 +411,11 @@ public class GradingSystem extends JFrame implements ActionListener {
                 double[] componentPercentage = { 0.6, 0.15, 0.25 };
                 float rawGrade = 0;
                 double finalGrade;
-
+    
                 for (int i = 0; i < finalGradeComponent.length; i++) {
                     rawGrade += finalGradeComponent[i] * componentPercentage[i];
                 }
-
+    
                 if (rawGrade >= 97 && rawGrade <= 100) {
                     finalGrade = 4.0;
                 } else if (rawGrade >= 93 && rawGrade <= 96) {
@@ -437,13 +433,13 @@ public class GradingSystem extends JFrame implements ActionListener {
                 } else {
                     finalGrade = 0.5;
                 }
-
+    
                 LQavg.setText(Float.toString(getAverageLongQuiz()));
                 CPavg.setText(Float.toString(getAverageClassPart()));
                 LAavg.setText(Float.toString(getAverageLabAct()));
-
+    
                 showMessage("Your final grade is: " + finalGrade, "Final Grade", JOptionPane.INFORMATION_MESSAGE);
-
+    
             } else if (e.getSource() == funcBtn[1]) {
                 LQavg.setText("");
                 CPavg.setText("");
@@ -457,7 +453,7 @@ public class GradingSystem extends JFrame implements ActionListener {
                 TEavg.setText("");
                 mtrmExam.setText("");
                 finalExam.setText("");
-
+    
             } else if (e.getSource() == funcBtn[2]) {
                 System.exit(0);
             }
@@ -469,6 +465,38 @@ public class GradingSystem extends JFrame implements ActionListener {
             showMessage(ex.getMessage(), "Assertion Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+    boolean validateInputs() {
+        JTextField[] allFields = Stream.of(longQuiz, classPart, labAct)
+                .flatMap(Arrays::stream)
+                .toArray(JTextField[]::new);
+    
+        for (JTextField field : allFields) {
+            try {
+                float value = Float.parseFloat(field.getText());
+                if (value > 100 || value < 0) {
+                    showMessage("Inputs should ONLY be between 0 and 100.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                showMessage("Please fill in all required elements.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }
+    
+        try {
+            if (Float.parseFloat(mtrmExam.getText()) > 100 || Float.parseFloat(finalExam.getText()) > 100) {
+                showMessage("Midterm and Final Exam scores should not exceed 100.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            showMessage("Please enter valid numeric values.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    
+        return true;
+    }
+    
 
     float getAverageLongQuiz() {
         float total = 0;
