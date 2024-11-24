@@ -171,18 +171,16 @@ public class AccountManagement extends JFrame implements ActionListener {
     }
 
     private void displayStudentData(int index) {
-        // Check if it's the "add new" form, i.e., index equals the size of the students list
         if (index == students.size()) {
             textFields[0].setText("");
             textFields[1].setText("");
-            textFields[2].setText("");
-            textFields[3].setText("");
+            courseCB.setSelectedIndex(-1);
+            levelCB.setSelectedIndex(-1);
             textFields[4].setText("");
             textFields[5].setText("");
             textFields[6].setText("");
-
-            courseCB.setSelectedIndex(-1);
-            levelCB.setSelectedIndex(-1);
+            
+            
     
         } else {
             // Display existing student data
@@ -190,17 +188,16 @@ public class AccountManagement extends JFrame implements ActionListener {
             textFields[0].setText(student.getStudentId());
             textFields[1].setText(student.getName());
             if (courseCB != null) {
-                courseCB.setSelectedItem(student.getCourse());  // Select course
+                courseCB.setSelectedItem(student.getCourse());  
             }
             if (levelCB != null) {
-                levelCB.setSelectedItem(student.getLevel());    // Select level
+                levelCB.setSelectedItem(student.getLevel());  
             }
             textFields[4].setText(student.getAddress());
             textFields[5].setText(student.getEmail());
             textFields[6].setText(student.getContact());
         }
     }
-    
     
 
     @Override
