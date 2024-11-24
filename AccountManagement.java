@@ -173,22 +173,16 @@ public class AccountManagement extends JFrame implements ActionListener {
     private void displayStudentData(int index) {
         // Check if it's the "add new" form, i.e., index equals the size of the students list
         if (index == students.size()) {
-            // Clear all text fields
-            for (int i = 0; i < textFields.length; i++) {
-                textFields[i].setText("");  
-            }
-    
-            // Reset ComboBoxes to their default state (reset ComboBox)
-            if (courseCB != null) {
-                courseCB.setSelectedIndex(-1); // No selection
-            }
-            if (levelCB != null) {
-                levelCB.setSelectedIndex(-1); // No selection
-            }
-            
-            // Ensure checkboxes or other components are reset
-            // Example if you have a checkbox:
-            // checkbox.setSelected(false);  // Reset checkbox
+            textFields[0].setText("");
+            textFields[1].setText("");
+            textFields[2].setText("");
+            textFields[3].setText("");
+            textFields[4].setText("");
+            textFields[5].setText("");
+            textFields[6].setText("");
+
+            courseCB.setSelectedIndex(-1);
+            levelCB.setSelectedIndex(-1);
     
         } else {
             // Display existing student data
@@ -244,8 +238,12 @@ public class AccountManagement extends JFrame implements ActionListener {
                 currentIndex++;
                 displayStudentData(currentIndex);
             } else {
-                displayStudentData(currentIndex); // Show the blank form for adding new student
+                displayStudentData(currentIndex); 
             }
+        }
+
+        if(command.equals("EXIT")){
+            dispose();
         }
     }
 
