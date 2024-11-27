@@ -1,0 +1,26 @@
+private void scheduleAnnouncement(LocalDateTime scheduleTime, String title, String content) {
+    long delay = java.time.Duration.between(LocalDateTime.now(), scheduleTime).toMillis();
+
+    if (delay <= 0) {
+        showFormattedMessage(title, content);
+        return;
+    }
+
+    // Create a new thread to handle the delayed announcement
+    Thread announcementThread = new Thread(() -> {
+        try {
+            // Sleep for the delay period
+            Thread.sleep(delay);
+
+            // After delay, show the announcement
+            SwingUtilities.invokeLater(() -> {
+                showFormattedMessage(title, content);
+            });
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    });
+
+    // Start the thread
+    announcementThread.start();
+}
