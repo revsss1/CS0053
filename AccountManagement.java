@@ -35,14 +35,12 @@ public class AccountManagement extends JFrame implements ActionListener {
         imageLabel.setBounds(175, 40, getWidth(), 130);
         panel.add(imageLabel);
 
-        // Title
         JLabel titleLabel = new JLabel("Account Management", SwingConstants.CENTER);
         titleLabel.setBounds(0, 190, getWidth(), 40);
         titleLabel.setForeground(new Color(0xF5F7F8));
         titleLabel.setFont(h1Font);
         panel.add(titleLabel);
 
-        // Labels and Input Fields
         String[] labels = {"Student ID:", "Name:", "Course:", "Level:", "Address:", "Email:", "Contact Number:"};
         int yPosition = 250;
 
@@ -80,7 +78,6 @@ public class AccountManagement extends JFrame implements ActionListener {
         String[] arrowBtnLabels = {"<<", ">>"};
         int xPosition = 70;
 
-        // Arrow Buttons
         for (int i = 0; i < arrowBtnLabels.length; i++) {
             arrowBtn[i] = new Button(arrowBtnLabels[i]);
             arrowBtn[i].setBounds(xPosition, yPosition + 40, 160, 35);
@@ -96,7 +93,6 @@ public class AccountManagement extends JFrame implements ActionListener {
         xPosition = 140;
         yPosition += 50;
 
-        // Function Buttons
         for (int i = 0; i < funcBtnLabels.length; i++) {
             funcBtn[i] = new Button(funcBtnLabels[i]);
             funcBtn[i].setBounds(xPosition, yPosition + 40, 90, 35);
@@ -108,13 +104,12 @@ public class AccountManagement extends JFrame implements ActionListener {
             xPosition += 110;
         }
 
-        // Initialize some student data for navigation
         students = new ArrayList<>();
         students.add(new Student("202210759", "Karl Alexis Revilla", "BSCS-SE", "3", "Quezon City", "karlrevilla@gmail.com", "1234567890"));
-        students.add(new Student("1002", "Sandra Cilot", "BSCS-SE", "3", "Pasig City", "sandracilot@gmail.com", "0987654321"));
-        students.add(new Student("1003", "Mica Tambalong", "BSCS-SE", "3", "Malabon City", "micatambalong@gmail.com", "1122334455"));
+        students.add(new Student("202211324", "Alessandra Gayle Cilot", "BSCS-SE", "3", "Pasig City", "sandracilot@gmail.com", "0987654321"));
+        students.add(new Student("202210907", "Mica Tambalong", "BSCS-SE", "3", "Malabon City", "micatambalong@gmail.com", "1122334455"));
 
-        displayStudentData(currentIndex);  // Display the first student's data
+        displayStudentData(currentIndex);  
 
         add(panel);
         setVisible(true);
@@ -183,7 +178,6 @@ public class AccountManagement extends JFrame implements ActionListener {
             
     
         } else {
-            // Display existing student data
             Student student = students.get(index);
             textFields[0].setText(student.getStudentId());
             textFields[1].setText(student.getName());
@@ -205,7 +199,6 @@ public class AccountManagement extends JFrame implements ActionListener {
         String command = e.getActionCommand();
     
         if (command.equals("UPDATE")) {
-            // Collect data from text fields
             String studentId = textFields[0].getText().trim();
             String name = textFields[1].getText().trim();
             String course = (String) courseCB.getSelectedItem();
@@ -214,11 +207,9 @@ public class AccountManagement extends JFrame implements ActionListener {
             String email = textFields[5].getText().trim();
             String contact = textFields[6].getText().trim();
     
-            // Validate inputs
             if (!studentId.isEmpty() && !name.isEmpty() && course != null && level != null &&
                 !address.isEmpty() && !email.isEmpty() && !contact.isEmpty()) {
     
-                // Check for duplicate Student ID
                 boolean isDuplicate = false;
                 for (int i = 0; i < students.size(); i++) {
                     if (students.get(i).getStudentId().equals(studentId) && i != currentIndex) {
@@ -231,11 +222,9 @@ public class AccountManagement extends JFrame implements ActionListener {
                     showMessage("A student with this ID already exists!", "Duplicate Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     if (currentIndex == students.size()) {
-                        // Populate the blank record with new data
                         students.add(new Student(studentId, name, course, level, address, email, contact));
                         showMessage("New student added!", "Success", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        // Update existing student
                         students.set(currentIndex, new Student(studentId, name, course, level, address, email, contact));
                         showMessage("Student details updated!", "Update Successful", JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -244,7 +233,6 @@ public class AccountManagement extends JFrame implements ActionListener {
                 showMessage("Please fill out all fields correctly!", "Input Error", JOptionPane.WARNING_MESSAGE);
             }
         } else if (command.equals("<<")) {
-            // Navigate to the previous record
             if (currentIndex > 0) {
                 currentIndex--;
                 displayStudentData(currentIndex);
@@ -252,11 +240,9 @@ public class AccountManagement extends JFrame implements ActionListener {
                 showMessage("You are at the first record.", "Navigation", JOptionPane.WARNING_MESSAGE);
             }
         } else if (command.equals(">>")) {
-            // Navigate to the next record
             if (currentIndex < students.size()) {
                 currentIndex++;
             } else {
-                // Add a blank record at the end
                 students.add(new Student("", "", null, null, "", "", ""));
                 currentIndex++;
             }
@@ -474,11 +460,9 @@ class Button extends JButton {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Draw shadow
         g2.setColor(new Color(0, 0, 0, 50));
         g2.fillRoundRect(shadowSize, shadowSize, getWidth() - shadowSize, getHeight() - shadowSize, 20, 20);
 
-        // Draw button background
         g2.setColor(getBackground());
         g2.fillRoundRect(0, 0, getWidth() - shadowSize, getHeight() - shadowSize, 20, 20);
 
