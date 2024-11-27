@@ -203,27 +203,48 @@ public class AccountManagement extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-
+    
         if (command.equals("UPDATE")) {
             // Collect data from text fields
-            String studentId = textFields[0].getText();
-            String name = textFields[1].getText();
+            String studentId = textFields[0].getText().trim();
+            String name = textFields[1].getText().trim();
             String course = (String) courseCB.getSelectedItem();
             String level = (String) levelCB.getSelectedItem();
-            String address = textFields[4].getText();
-            String email = textFields[5].getText();
-            String contact = textFields[6].getText();
-
-            if (currentIndex == students.size()) {
-                // Add new student
-                students.add(new Student(studentId, name, course, level, address, email, contact));
-                showMessage("New student added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            String address = textFields[4].getText().trim();
+            String email = textFields[5].getText().trim();
+            String contact = textFields[6].getText().trim();
+    
+            // Validate inputs
+            if (!studentId.isEmpty() && !name.isEmpty() && course != null && level != null &&
+                !address.isEmpty() && !email.isEmpty() && !contact.isEmpty()) {
+    
+                // Check for duplicate Student ID
+                boolean isDuplicate = false;
+                for (int i = 0; i < students.size(); i++) {
+                    if (students.get(i).getStudentId().equals(studentId) && i != currentIndex) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+    
+                if (isDuplicate) {
+                    showMessage("A student with this ID already exists!", "Duplicate Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    if (currentIndex == students.size()) {
+                        // Populate the blank record with new data
+                        students.add(new Student(studentId, name, course, level, address, email, contact));
+                        showMessage("New student added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        // Update existing student
+                        students.set(currentIndex, new Student(studentId, name, course, level, address, email, contact));
+                        showMessage("Student details updated!", "Update Successful", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
             } else {
-                // Update existing student
-                students.set(currentIndex, new Student(studentId, name, course, level, address, email, contact));
-                showMessage("Student details updated!", "Update Successful", JOptionPane.INFORMATION_MESSAGE);
+                showMessage("Please fill out all fields correctly!", "Input Error", JOptionPane.WARNING_MESSAGE);
             }
         } else if (command.equals("<<")) {
+            // Navigate to the previous record
             if (currentIndex > 0) {
                 currentIndex--;
                 displayStudentData(currentIndex);
@@ -231,13 +252,18 @@ public class AccountManagement extends JFrame implements ActionListener {
                 showMessage("You are at the first record.", "Navigation", JOptionPane.WARNING_MESSAGE);
             }
         } else if (command.equals(">>")) {
+            // Navigate to the next record
             if (currentIndex < students.size()) {
                 currentIndex++;
-                displayStudentData(currentIndex);
             } else {
-                displayStudentData(currentIndex); 
+                // Add a blank record at the end
+                students.add(new Student("", "", null, null, "", "", ""));
+                currentIndex++;
             }
+            displayStudentData(currentIndex);
         }
+    
+    
 
         if(command.equals("EXIT")){
             dispose();
